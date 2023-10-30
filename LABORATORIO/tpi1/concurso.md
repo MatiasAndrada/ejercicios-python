@@ -16,3 +16,8 @@ Se realizo pruebas ingresando los diferentes sist de medición para comprobar su
 ## Cronograma de desarrollo y lanzamiento
 
 Esta es la v-1
+
+### Participantes
+
+- [x] 1. [Matias Andrada]
+- [x] 2. [Emiliano Coronel]
