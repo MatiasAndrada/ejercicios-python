@@ -3,6 +3,9 @@ Sist de pedidos de hormigón
 LUMNOS: MAtIAS ANDRADA, EMILIANO CORONEL
 """
 
+# Importacion de funciones del controlador para guardar y buscar pedidos
+from controller import saveOrder, findOrder
+
 print("Bienvenido al sistema de pedidos de hormigon")
 
 #  operacion a realizar
@@ -16,36 +19,46 @@ while True:
     try:
         operacion = int(input("Ingrese la operación que desea realizar: "))
         if operacion not in [1, 2]:
-            raise ValueError
+            raise ValueError  # si la operacion no es 1 o 2, se lanza un error
         break
     except ValueError:
         print("Opcion incorrecta, ingrese nuevamente la operación que desea realizar")
-
 
 # si la operacion es 1, generar un pedido
 if operacion == 1:
     print("Generar un pedido")
     # validar que el sistema de medición ingresado sea correcto
+    # preguntar por el sistema de medición
+
+    print("Ingrese el sistema de medición que desea utilizar: ")
+    print("1. Metros")
+    print("2. Pies")
+    print("3. Centímetros")
     while True:
         try:
             sist_ingresado = int(
-                input("Ingrese el sistema de medición a utilizar: "))
+                input(""))
             if sist_ingresado not in [1, 2, 3]:
                 raise ValueError
             break
+
         except ValueError:
             print(
                 "Opcion incorrecta, ingrese nuevamente el sistema de medición a utilizar")
 
-    # solicitar las dimensiones de la superficie donde se utilizara el hormigón
+        match sist_ingresado:  # switch case. Para poder devolver un valor distinto a la var sin modificarla
+            case 1:
+                print("Usted eligió metros")
+            case 2:
+                print("Usted eligió pies")
+            case 3:
+                print("Usted eligió centímetros")
 
-    print(
-        f"Ingrese las dimensiones de la superficie en {sist_ingresado} donde se utilizara el hormigón:")
-    # validar quie las dimensiones sean positivas
+    # validar quie las medidas sean positivas
     largo = 0
     while largo <= 0:
         try:
-            largo = float(input("Ingrese el largo (debe ser positivo): "))
+            largo = float(input("Ingrese el largo : "))
             if largo <= 0:
                 raise ValueError
         except ValueError:
@@ -54,7 +67,7 @@ if operacion == 1:
     ancho = 0
     while ancho <= 0:
         try:
-            ancho = float(input("Ingrese el ancho (debe ser positivo): "))
+            ancho = float(input("Ingrese el ancho : "))
             if ancho <= 0:
                 raise ValueError
         except ValueError:
@@ -63,7 +76,7 @@ if operacion == 1:
     alto = 0
     while alto <= 0:
         try:
-            alto = float(input("Ingrese el alto (debe ser positivo): "))
+            alto = float(input("Ingrese el alto : "))
             if alto <= 0:
                 raise ValueError
         except ValueError:
@@ -74,41 +87,67 @@ if operacion == 1:
     if sist_ingresado == 1:
         metros_cubicos = largo * ancho * alto
     elif sist_ingresado == 2:
-        metros_cubicos = (largo * 0.3048) * (ancho * 0.3048) * (alto * 0.3048)
+        # convertir pies a metros
+        largo = largo * 0.3048
+        ancho = ancho * 0.3048
+        alto = alto * 0.3048
+        # hacer conversion a metros cubicos
+        metros_cubicos = largo * ancho * alto
     elif sist_ingresado == 3:
-        metros_cubicos = (largo * 0.01) * (ancho * 0.01) * (alto * 0.01)
+        # convertir centimetros a metros
+        largo = largo / 100
+        ancho = ancho / 100
+        alto = alto / 100
+        # hacer conversion a metros cubicos
+        metros_cubicos = largo * ancho * alto
     # mostrarle el total de metros cubicos de hormigón requeridos,
     print(
         f"La cantidad de metros cúbicos de hormigón requeridos es: {metros_cubicos} m3")
 
     # preguntar si desea guardar el pedido, si es un si preguntarle el nombre y  DNI.
     while True:
+        print("Desea guardar el pedido?")
+        print("1. Si")
+        print("2. No")
         try:
-            guardar = int(
-                input("Desea guardar el pedido?\n1. Si\n2. No\nIngrese la opción: "))
+            guardar = int(input(""))
             if guardar not in [1, 2]:
                 raise ValueError
             break
         except ValueError:
-            print("Opcion incorrecta, ingrese nuevamente la opción")
+            print("Opcion incorrecta, ingrese nuevamente la opción:")
 
     if guardar == 1:
+        # solicitar el nombre y el DNI
         while True:
             try:
-                nombre = input("Ingrese el nombre: ")
+                # solicitar el nombre
+                nombre = str(input("Ingrese el nombre: "))
                 if nombre == "":
-                    raise ValueError
+                    raise ValueError  # si el nombre esta vacio, se lanza un error
                 break
             except ValueError:
                 print("El nombre no puede estar vacio")
         while True:
             try:
+                dni = int(input("Ingrese el DNI: "))  # solicitar el DNI
+                if dni >= 0:
+                    break
+            except ValueError:
+                print("El DNI debe ser un número positivo")
+        # guardar el pedido
+        saveOrder(nombre, dni, metros_cubicos)
+
+    elif operacion == 2:
+        print("Consultar un pedido")
+        while True:
+            try:
+                # solicitar el DNI
                 dni = int(input("Ingrese el DNI: "))
                 if dni >= 0:
                     raise ValueError
+                # buscar el pedido
+                findOrder(dni)
                 break
             except ValueError:
                 print("El DNI debe ser un número positivo")
-
-elif operacion == 2:
-    print("Consultar un pedido")
