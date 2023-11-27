@@ -15,13 +15,14 @@ print("1. Generar un pedido")
 print("2. Consultar un pedido")
 
 # validar que la operacion ingresada sea correcta
-while True:
-    try:
+while True:  # bucle infinito
+    try:  # try catch para capturar errores
+        # solicitar la operacion
         operacion = int(input("Ingrese la operación que desea realizar: "))
-        if operacion not in [1, 2]:
-            raise ValueError  # si la operacion no es 1 o 2, se lanza un error
-        break
-    except ValueError:
+        if operacion not in [1, 2]:  # si la operacion no es 1 o 2, se lanza un error
+            raise ValueError
+        break  # si no hay errores, se sale del bucle
+    except ValueError:  # si hay un error, se imprime el mensaje
         print("Opcion incorrecta, ingrese nuevamente la operación que desea realizar")
 
 # si la operacion es 1, generar un pedido
@@ -137,7 +138,6 @@ if operacion == 1:
                 print("El DNI debe ser un número positivo")
         # guardar el pedido
         saveOrder(nombre, dni, metros_cubicos)
-
     elif operacion == 2:
         print("Consultar un pedido")
         while True:
