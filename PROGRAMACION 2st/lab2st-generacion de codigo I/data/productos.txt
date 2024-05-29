@@ -1,0 +1,10 @@
+Celular,25,1
+Notebook,55,3
+Smartwatch,8,2
+Tablet,35,1
+Camara digital,18,3
+Auriculares,5,2
+Impresora,12,1
+Consola,30,2
+Robot aspirador,25,3
+Altavoces Bluetooth,70,1
